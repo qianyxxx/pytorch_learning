@@ -13,10 +13,10 @@ from torch.utils.tensorboard import SummaryWriter
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # 准备数据集
-train_data = torchvision.datasets.CIFAR10(root="./dataset", train=True, download=True,
+train_data = torchvision.datasets.CIFAR10(root="../dataset", train=True, download=True,
                                           transform=torchvision.transforms.ToTensor())
 
-test_data = torchvision.datasets.CIFAR10(root="./dataset", train=False, download=True,
+test_data = torchvision.datasets.CIFAR10(root="../dataset", train=False, download=True,
                                          transform=torchvision.transforms.ToTensor())
 
 # length of data
@@ -122,8 +122,9 @@ for i in range(epoch):
     writer.add_scalar("test_loss", total_test_loss, total_test_step)
     writer.add_scalar("test_accuracy", total_accuracy / test_data_size, total_test_step)
     total_test_step += 1
-    # save model in every epoch
-    torch.save(model, "saved_model/CIFAR10_{}.pth".format(i + 1))
-    print("model saved in saved_model/CIFAR10_{}.pth".format(i + 1))
+    # save model in every 10 epoch
+    if (i + 1) % 10 == 0:
+        torch.save(model, "../saved_model/CIFAR10_{}.pth".format(i + 1))
+        print("model saved in ../saved_model/CIFAR10_{}.pth".format(i + 1))
 
 writer.close()
